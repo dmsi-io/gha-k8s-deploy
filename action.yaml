@@ -46,6 +46,10 @@ inputs:
     description: 'Directory of Dockerfile'
     required: false
     default: './'
+  skip_deploy_status:
+    description: 'Flag to skip deployment status check'
+    required: false
+    default: 'false'
 
 runs: 
   using: 'composite'
@@ -168,6 +172,6 @@ runs:
       working-directory: ${{ inputs.k8s_directory }}
 
     - name: Check deployment status
-      if: steps.deployment_exists.outputs.files_exists == 'true'
+      if: inputs.skip_deploy_status != 'true' && steps.deployment_exists.outputs.files_exists == 'true'
       run: kubectl rollout status deployment/$SERVICE_NAME -n $NAMESPACE
       shell: bash
