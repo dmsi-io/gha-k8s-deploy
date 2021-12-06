@@ -5,50 +5,63 @@ inputs:
   GCP_SA_KEY: 
     description: 'GCP Service Account Key (JSON)'
     required: true
+
   GKE_CLUSTER_NAME:
     description: 'Google Kubernetes Engine Cluster name'
     required: true
+
   GCP_ZONE: 
     description: 'GCP Zone'
     required: true
+
   GCP_PROJECT_ID:
     description: 'GCP Project ID'
     required: true
+
   k8s_directory: 
     description: 'Location of k8s config files'
     required: false
     default: 'k8s'
+
   namespace:
     description: 'Filename of namespace config'
     required: false
     default: 'namespace.yaml'
+
   secret:
     description: 'Name of secret to copy from default namespace'
     required: false
+
   configmap:
     description: 'Filename of configmap config'
     required: false
     default: 'configmap.yaml'
+
   deployment:
     description: 'Filename of deployment config'
     required: false
     default: 'deployment.yaml'
+
   service:
     description: 'Filename of service config'
     required: false
     default: 'service.yaml'
+
   ingress:
     description: 'Filename of ingress config'
     required: false
     default: 'ingress.yaml'
+
   skip_docker:
     description: 'Flag to skip docker build and push steps'
     required: false
     default: 'false'
+
   docker_directory:
     description: 'Directory of Dockerfile'
     required: false
     default: './'
+    
   skip_deploy_status:
     description: 'Flag to skip deployment status check'
     required: false
