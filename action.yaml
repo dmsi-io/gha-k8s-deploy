@@ -63,35 +63,30 @@ runs:
       uses: andstor/file-existence-action@v1.0.1
       with:
         files: "${{ inputs.k8s_directory }}/${{ inputs.namespace }}"
-        allow_failure: 'true'
     
     - name: "Check configmap existence"
       id: configmap_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
         files: "${{ inputs.k8s_directory }}/${{ inputs.configmap }}"
-        allow_failure: 'true'
 
     - name: "Check deployment existence"
       id: deployment_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
         files: "${{ inputs.k8s_directory }}/${{ inputs.deployment }}"
-        allow_failure: 'true'
 
     - name: "Check service existence"
       id: service_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
         files: "${{ inputs.k8s_directory }}/${{ inputs.service }}"
-        allow_failure: 'true'
 
     - name: "Check ingress existence"
       id: ingress_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
         files: "${{ inputs.k8s_directory }}/${{ inputs.ingress }}"
-        allow_failure: 'true'
 
     ###### GCloud Setup ######
 
