@@ -62,41 +62,36 @@ runs:
       id: namespace_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.namespace }}"
+        files: "${{ inputs.k8s_directory }}/${{ inputs.namespace }}"
         allow_failure: 'true'
-      working-directory: ${{ inputs.k8s_directory }}
     
     - name: "Check configmap existence"
       id: configmap_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.configmap }}"
+        files: "${{ inputs.k8s_directory }}/${{ inputs.configmap }}"
         allow_failure: 'true'
-      working-directory: ${{ inputs.k8s_directory }}
 
     - name: "Check deployment existence"
       id: deployment_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.deployment }}"
+        files: "${{ inputs.k8s_directory }}/${{ inputs.deployment }}"
         allow_failure: 'true'
-      working-directory: ${{ inputs.k8s_directory }}
 
     - name: "Check service existence"
       id: service_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.service }}"
+        files: "${{ inputs.k8s_directory }}/${{ inputs.service }}"
         allow_failure: 'true'
-      working-directory: ${{ inputs.k8s_directory }}
 
     - name: "Check ingress existence"
       id: ingress_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.ingress }}"
+        files: "${{ inputs.k8s_directory }}/${{ inputs.ingress }}"
         allow_failure: 'true'
-      working-directory: ${{ inputs.k8s_directory }}
 
     ###### GCloud Setup ######
 
