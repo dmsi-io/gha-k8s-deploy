@@ -149,10 +149,13 @@ runs:
           echo "secrets file already exists in namespace..." 
         else 
           echo "secret file does not exist in namespace, copying..."
-
-          kubectl get secret ${{ inputs.secret }} -o json \
-          | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' \
-          | kubectl apply -n $NAMESPACE -f -
+          if kubectl get secret ${{ inputs.secret }} --ignore-not-found | grep ${{ inputs.secret }}; then
+            kubectl get secret ${{ inputs.secret }} -o json \
+            | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' \
+            | kubectl apply -n $NAMESPACE -f -
+          else
+            echo "did not find secret in default namespace"
+          fi
         fi
       shell: bash
 
