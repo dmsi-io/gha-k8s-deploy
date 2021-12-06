@@ -22,6 +22,9 @@ inputs:
     description: 'Filename of namespace config'
     required: false
     default: 'namespace.yaml'
+  secret:
+    description: 'Name of secret to copy from default namespace'
+    required: false
   configmap:
     description: 'Filename of configmap config'
     required: false
@@ -138,6 +141,20 @@ runs:
         cat ${{ inputs.namespace }} | envsubst | kubectl apply -f - 
       shell: bash
       working-directory: ${{ inputs.k8s_directory }}
+
+    - name: Copy secret to namespace
+      if: inputs.secret != ''
+      run: |
+        if kubectl get secret ${{ inputs.secret }} -n $NAMESPACE --ignore-not-found | grep ${{ inputs.secret }}; then 
+          echo "secrets file already exists in namespace..." 
+        else 
+          echo "secret file does not exist in namespace, copying..."
+
+          kubectl get secret ${{ inputs.secret }} -o json \
+          | jq 'del(.metadata["namespace","creationTimestamp","resourceVersion","selfLink","uid"])' \
+          | kubectl apply -n $NAMESPACE -f -
+        fi
+      shell: bash
 
     - name: Deploy ConfigMap
       if: steps.configmap_exists.outputs.files_exists == 'true'
