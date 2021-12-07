@@ -15,7 +15,7 @@ The purpose of this GitHub Action is to handle the setup of GCloud and kubectl r
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
 - name: Deploy Kubernetes
-  uses: dmsi-io/gha-k8s-deploy@feature/KNOX-176
+  uses: dmsi-io/gha-k8s-deploy@v1
   with: 
     GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
     GKE_CLUSTER_NAME: ${{ secrets.GCP_STAGING_CLUSTER_NAME }}
