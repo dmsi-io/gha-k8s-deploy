@@ -1,0 +1,28 @@
+name: Test gha-k8s-deploy
+
+on:
+  - push
+
+jobs:
+  test-gha-k8s-deploy:
+    runs-on: ubuntu-latest
+    name: Test gha-k8s-deploy
+    steps:
+      - name: Export Environment Variables
+        uses: dmsi-io/gha-env-variables@v1
+        with:
+          TLD: testing.domain.com
+          GCP_PROJECT_ID: staging-project
+
+      # GitHub Action Repos must be public to be used within other repos. 
+      # Due to this, organization secrets cannot be used to test this action in place. 
+      # If changes need to be made to this action, it is recommended to test them from a different, private repo in conjunction. 
+
+      # - name: Deploy Kubernetes
+      #   uses: dmsi-io/gha-k8s-deploy@main
+      #   with: 
+      #     GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+      #     GKE_CLUSTER_NAME: ${{ secrets.GCP_STAGING_CLUSTER_NAME }}
+      #     GCP_ZONE: ${{ secrets.GCP_ZONE }}
+      #     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+      #     skip_docker: 'true'

@@ -1,0 +1,26 @@
+# https://github.com/kubernetes/ingress-gce/blob/master/docs/annotations.md
+apiVersion: networking.k8s.io/v1
+kind: List
+items:
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: staging-ingress
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+  spec:
+    tls:
+    - hosts:
+      - $HOSTNAME
+      secretName: $CERT_NAME
+    rules:
+    - host: $HOSTNAME
+      http:
+        paths:
+        - backend:
+            service:
+              name: $SERVICE_NAME
+              port:
+                number: 80
+            path: /
+            pathType: Prefix
