@@ -110,7 +110,7 @@ Some repositories won't need to build and publish a Docker image, this flag allo
 
 ```yaml
 with:
-  skip_docker: 'true'
+  skip_docker: true
 ```
 
 #### Docker Directory
@@ -134,7 +134,7 @@ Sometimes when trying to debug a k8s deployment that refuses to deploy correctly
 
 ```yaml
 with:
-  skip_deploy_status: 'true'
+  skip_deploy_status: true
 ```
 
 #### Print Environment Variables
@@ -145,7 +145,7 @@ Sometimes it is helpful to view the environment variables set to help debug. Sup
 
 ```yaml
 with:
-  print_environemnt: 'true'
+  print_environemnt: true
 ```
 
 #### Print GCloud Info
@@ -156,5 +156,5 @@ Sometimes it is helpful to view gcloud information to help debug. Supplying this
 
 ```yaml
 with:
-  print_gcloud_info: 'true'
+  print_gcloud_info: true
 ```
