@@ -18,6 +18,16 @@ inputs:
     description: 'GCP Project ID'
     required: true
 
+  print_gcloud_info:
+    description: 'Flag to optionally print gcloud info after authenticating'
+    required: false
+    default: 'false'
+
+  print_environemnt:
+    description: 'Flag to optionally print environment variables'
+    required: false
+    default: 'false'
+
   k8s_directory:
     description: 'Location of k8s config files'
     required: false
@@ -70,6 +80,11 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: environment
+      if: inputs.print_environemnt == 'true'
+      run: env | sort
+      shell: bash
+
     ####### Check file existence #######
 
     - name: 'Check namespace existence'
@@ -114,6 +129,7 @@ runs:
       uses: google-github-actions/setup-gcloud@v0.2.1
 
     - name: Use gcloud CLI
+      if: inputs.print_gcloud_info == 'true'
       run: gcloud info
       shell: bash
 
