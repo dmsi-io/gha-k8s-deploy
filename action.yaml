@@ -23,7 +23,7 @@ inputs:
     required: false
     default: 'false'
 
-  print_environemnt:
+  print_environment:
     description: 'Flag to optionally print environment variables'
     required: false
     default: 'false'
@@ -81,7 +81,7 @@ runs:
   using: 'composite'
   steps:
     - name: environment
-      if: inputs.print_environemnt == 'true'
+      if: inputs.print_environment == 'true'
       run: env | sort
       shell: bash
 
