@@ -27,7 +27,7 @@ The purpose of this GitHub Action is to handle the setup of GCloud and kubectl r
 
 #### K8S Directory
 
-Used to specify a different directory to check for k8s related config files. All k8s files to deploy my be under this directory.
+Used to specify a different directory to check for k8s related config files. All k8s files to deploy may be under this directory.
 
 > Example kubernetes configs can be found under the `k8s` directory. These are not used within this GitHub Action.
 
