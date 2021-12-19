@@ -2,7 +2,7 @@ name: 'Deploy Kubernetes Application'
 description: 'Used to handle the gcloud and kubectl setup to deploy Docker images to Google Container Registry and deploy an application to the Kubernetes cluster.'
 
 inputs:
-  GCP_SA_KEY: 
+  GCP_SA_KEY:
     description: 'GCP Service Account Key (JSON)'
     required: true
 
@@ -10,7 +10,7 @@ inputs:
     description: 'Google Kubernetes Engine Cluster name'
     required: true
 
-  GCP_ZONE: 
+  GCP_ZONE:
     description: 'GCP Zone'
     required: true
 
@@ -18,7 +18,7 @@ inputs:
     description: 'GCP Project ID'
     required: true
 
-  k8s_directory: 
+  k8s_directory:
     description: 'Location of k8s config files'
     required: false
     default: 'k8s'
@@ -61,52 +61,46 @@ inputs:
     description: 'Directory of Dockerfile'
     required: false
     default: './'
-    
+
   skip_deploy_status:
     description: 'Flag to skip deployment status check'
     required: false
     default: 'false'
 
-runs: 
+runs:
   using: 'composite'
   steps:
-    - name: Environment
-      run: |
-        env | sort
-        sudo apt-get install gettext
-      shell: bash
-
     ####### Check file existence #######
 
-    - name: "Check namespace existence"
+    - name: 'Check namespace existence'
       id: namespace_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.k8s_directory }}/${{ inputs.namespace }}"
-    
-    - name: "Check configmap existence"
+        files: '${{ inputs.k8s_directory }}/${{ inputs.namespace }}'
+
+    - name: 'Check configmap existence'
       id: configmap_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.k8s_directory }}/${{ inputs.configmap }}"
+        files: '${{ inputs.k8s_directory }}/${{ inputs.configmap }}'
 
-    - name: "Check deployment existence"
+    - name: 'Check deployment existence'
       id: deployment_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.k8s_directory }}/${{ inputs.deployment }}"
+        files: '${{ inputs.k8s_directory }}/${{ inputs.deployment }}'
 
-    - name: "Check service existence"
+    - name: 'Check service existence'
       id: service_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.k8s_directory }}/${{ inputs.service }}"
+        files: '${{ inputs.k8s_directory }}/${{ inputs.service }}'
 
-    - name: "Check ingress existence"
+    - name: 'Check ingress existence'
       id: ingress_exists
       uses: andstor/file-existence-action@v1.0.1
       with:
-        files: "${{ inputs.k8s_directory }}/${{ inputs.ingress }}"
+        files: '${{ inputs.k8s_directory }}/${{ inputs.ingress }}'
 
     ###### GCloud Setup ######
 
@@ -151,7 +145,7 @@ runs:
       if: steps.namespace_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.namespace }} | envsubst
-        cat ${{ inputs.namespace }} | envsubst | kubectl apply -f - 
+        cat ${{ inputs.namespace }} | envsubst | kubectl apply -f -
       shell: bash
       working-directory: ${{ inputs.k8s_directory }}
 
@@ -176,7 +170,7 @@ runs:
       if: steps.configmap_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.configmap }} | envsubst
-        cat ${{ inputs.configmap }} | envsubst | kubectl apply -n $NAMESPACE -f - 
+        cat ${{ inputs.configmap }} | envsubst | kubectl apply -n $NAMESPACE -f -
       shell: bash
       working-directory: ${{ inputs.k8s_directory }}
 
