@@ -15,12 +15,28 @@ The purpose of this GitHub Action is to handle the setup of GCloud and kubectl r
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
 - name: Deploy Kubernetes
-  uses: dmsi-io/gha-k8s-deploy@v1
+  uses: dmsi-io/gha-k8s-deploy@v1.1
   with:
     GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
     GKE_CLUSTER_NAME: ${{ secrets.GCP_STAGING_CLUSTER_NAME }}
     GCP_ZONE: ${{ secrets.GCP_ZONE }}
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+```
+
+### Outputs
+
+#### URL
+
+If deploying a new namespace, this action will output the full URL of the new namespace
+
+```yaml
+- name: Deploy Kubernetes
+  uses: dmsi-io/gha-k8s-deploy@v1.1
+  id: deploy
+  with: ...
+
+- name: Print URL
+  run: echo ${{ steps.deploy.outputs.url }}
 ```
 
 ### Optional inputs
@@ -48,8 +64,6 @@ Used to specify a different file to deploy a Namespace object from. If the file 
 with:
   namespace: 'name.yaml'
 ```
-
-> If deploying a namespace, the created domain can be accessed via: (id: deploy) `${{ steps.deploy.outputs.url }}`
 
 #### Secret
 
