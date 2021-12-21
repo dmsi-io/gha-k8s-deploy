@@ -77,7 +77,12 @@ inputs:
     required: false
     default: 'false'
 
-runs:
+outputs:
+  url:
+    description: 'URL'
+    value: ${{ steps.URL.outputs.URL }}
+
+runs: 
   using: 'composite'
   steps:
     - name: environment
@@ -164,6 +169,12 @@ runs:
         cat ${{ inputs.namespace }} | envsubst | kubectl apply -f -
       shell: bash
       working-directory: ${{ inputs.k8s_directory }}
+
+    - name: Output URL
+      id: URL
+      if: steps.namespace_exists.outputs.files_exists == 'true'
+      run: echo "::set-output name=URL::https://$HOSTNAME"
+      shell: bash
 
     - name: Copy secret to namespace
       if: inputs.secret != ''

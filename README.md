@@ -49,6 +49,8 @@ with:
   namespace: 'name.yaml'
 ```
 
+> If deploying a namespace, the created domain can be accessed via: (id: deploy) `${{ steps.deploy.outputs.url }}`
+
 #### Secret
 
 Used to specify a secret to copy from the default namespace into the namespace being created.
