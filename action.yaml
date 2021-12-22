@@ -94,31 +94,32 @@ runs:
 
     - name: 'Check namespace existence'
       id: namespace_exists
-      uses: andstor/file-existence-action@v1.0.1
+      # Commit equivalent to https://github.com/andstor/file-existence-action/releases/tag/v1
+      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
       with:
         files: '${{ inputs.k8s_directory }}/${{ inputs.namespace }}'
 
     - name: 'Check configmap existence'
       id: configmap_exists
-      uses: andstor/file-existence-action@v1.0.1
+      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
       with:
         files: '${{ inputs.k8s_directory }}/${{ inputs.configmap }}'
 
     - name: 'Check deployment existence'
       id: deployment_exists
-      uses: andstor/file-existence-action@v1.0.1
+      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
       with:
         files: '${{ inputs.k8s_directory }}/${{ inputs.deployment }}'
 
     - name: 'Check service existence'
       id: service_exists
-      uses: andstor/file-existence-action@v1.0.1
+      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
       with:
         files: '${{ inputs.k8s_directory }}/${{ inputs.service }}'
 
     - name: 'Check ingress existence'
       id: ingress_exists
-      uses: andstor/file-existence-action@v1.0.1
+      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
       with:
         files: '${{ inputs.k8s_directory }}/${{ inputs.ingress }}'
 
