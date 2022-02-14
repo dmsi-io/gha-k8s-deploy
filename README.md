@@ -54,7 +54,7 @@ The purpose of this GitHub Action is to handle the setup of GCloud and kubectl r
     GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 ```
 
-For a further practical example, see [.github/workflows/release.yml](.github/workflows/main.yml).
+For a further practical example, see [.github/workflows/main.yml](.github/workflows/main.yml).
 
 <!-- badge links -->
 
