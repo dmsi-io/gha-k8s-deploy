@@ -72,6 +72,11 @@ inputs:
     required: false
     default: './'
 
+  skip_k8s_deploy:
+    description: 'Flag to skip Kubernetes artifact deployment steps'
+    required: false
+    default: 'false'
+
   skip_deploy_status:
     description: 'Flag to skip deployment status check'
     required: false
@@ -82,7 +87,7 @@ outputs:
     description: 'URL'
     value: ${{ steps.URL.outputs.URL }}
 
-runs: 
+runs:
   using: 'composite'
   steps:
     - name: environment
@@ -142,29 +147,30 @@ runs:
     ###### Build and Publish Docker Image ######
 
     - name: Authenticate Docker
-      if: inputs.skip_docker == 'false'
+      if: inputs.skip_docker != 'true'
       run: gcloud auth configure-docker
       shell: bash
 
     - name: Containerize
-      if: inputs.skip_docker == 'false'
+      if: inputs.skip_docker != 'true'
       run: docker build -t $BUILD_IMAGE .
       working-directory: ${{ inputs.docker_directory }}
       shell: bash
 
     - name: Publish
-      if: inputs.skip_docker == 'false'
+      if: inputs.skip_docker != 'true'
       run: docker push $BUILD_IMAGE
       shell: bash
 
     ###### Deploy Kubernetes Artifacts ######
 
     - name: Authenticate GKE cluster
+      if: inputs.skip_k8s_deploy != 'true'
       run: gcloud container clusters get-credentials ${{ inputs.GKE_CLUSTER_NAME }} --zone ${{ inputs.GCP_ZONE }} --project ${{ inputs.GCP_PROJECT_ID }}
       shell: bash
 
     - name: Deploy Namespace
-      if: steps.namespace_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.namespace_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.namespace }} | envsubst
         cat ${{ inputs.namespace }} | envsubst | kubectl apply -f -
@@ -173,12 +179,12 @@ runs:
 
     - name: Output URL
       id: URL
-      if: steps.namespace_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.namespace_exists.outputs.files_exists == 'true'
       run: echo "::set-output name=URL::https://$HOSTNAME"
       shell: bash
 
     - name: Copy secret to namespace
-      if: inputs.secret != ''
+      if: inputs.skip_k8s_deploy != 'true' && inputs.secret != ''
       run: |
         if kubectl get secret ${{ inputs.secret }} -n $NAMESPACE --ignore-not-found | grep ${{ inputs.secret }}; then 
           echo "secrets file already exists in namespace..." 
@@ -195,7 +201,7 @@ runs:
       shell: bash
 
     - name: Deploy ConfigMap
-      if: steps.configmap_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.configmap_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.configmap }} | envsubst
         cat ${{ inputs.configmap }} | envsubst | kubectl apply -n $NAMESPACE -f -
@@ -203,7 +209,7 @@ runs:
       working-directory: ${{ inputs.k8s_directory }}
 
     - name: Deploy Deployment
-      if: steps.deployment_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.deployment_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.deployment }} | envsubst
         cat ${{ inputs.deployment }} | envsubst | kubectl apply -n $NAMESPACE -f -
@@ -211,7 +217,7 @@ runs:
       working-directory: ${{ inputs.k8s_directory }}
 
     - name: Deploy Service
-      if: steps.service_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.service_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.service }} | envsubst
         cat ${{ inputs.service }} | envsubst | kubectl apply -n $NAMESPACE -f -
@@ -219,7 +225,7 @@ runs:
       working-directory: ${{ inputs.k8s_directory }}
 
     - name: Deploy Ingress
-      if: steps.ingress_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && steps.ingress_exists.outputs.files_exists == 'true'
       run: |
         cat ${{ inputs.ingress }} | envsubst
         cat ${{ inputs.ingress }} | envsubst | kubectl apply -n $NAMESPACE -f -
@@ -227,6 +233,6 @@ runs:
       working-directory: ${{ inputs.k8s_directory }}
 
     - name: Check deployment status
-      if: inputs.skip_deploy_status != 'true' && steps.deployment_exists.outputs.files_exists == 'true'
+      if: inputs.skip_k8s_deploy != 'true' && inputs.skip_deploy_status != 'true' && steps.deployment_exists.outputs.files_exists == 'true'
       run: kubectl rollout status deployment/$SERVICE_NAME -n $NAMESPACE
       shell: bash
