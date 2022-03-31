@@ -4,6 +4,15 @@
 
 The purpose of this GitHub Action is to handle the setup of GCloud and kubectl resources, docker building and publishing, as well as deployment of kubernetes objects.
 
+## Setup
+
+This action is reliant on a Service Account with the following permissions:
+
+- Kubernetes Engine Admin
+- Storage Admin
+
+Additionally, it is recommended to use Workload Identity Federation. If this is not setup follow the steps here: https://github.com/google-github-actions/auth#setup
+
 ## Inputs
 
 | NAME                    | DESCRIPTION                                                                                      | TYPE     | REQUIRED | DEFAULT           |
