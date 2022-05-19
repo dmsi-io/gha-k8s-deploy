@@ -168,13 +168,13 @@ runs:
       working-directory: ${{ inputs.docker_directory }}
       shell: bash
 
-    - name: Deploy Develop Image
+    - name: Create Develop Image
       if: inputs.skip_docker != 'true' && github.ref_name == 'develop'
       run: |
         docker image tag $BUILD_IMAGE "${BUILD_IMAGE%:*}:develop"
       shell: bash
 
-    - name: Deploy Latest Image
+    - name: Create Latest Image
       if: inputs.skip_docker != 'true' && github.ref_type == 'tag'
       run: |
         docker image tag $BUILD_IMAGE "${BUILD_IMAGE%:*}:latest"
