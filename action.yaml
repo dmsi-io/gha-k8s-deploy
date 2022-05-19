@@ -168,9 +168,21 @@ runs:
       working-directory: ${{ inputs.docker_directory }}
       shell: bash
 
-    - name: Publish
+    - name: Deploy Develop Image
+      if: inputs.skip_docker != 'true' #&& github.ref_name == 'develop'
+      run: |
+        docker image tag $BUILD_IMAGE "${BUILD_IMAGE%:*}:develop"
+      shell: bash
+
+    - name: Deploy Latest Image
+      if: inputs.skip_docker != 'true' #&& github.ref_type == 'tag'
+      run: |
+        docker image tag $BUILD_IMAGE "${BUILD_IMAGE%:*}:latest"
+      shell: bash
+
+    - name: Publish Tags
       if: inputs.skip_docker != 'true'
-      run: docker push $BUILD_IMAGE
+      run: docker image push --all-tags ${BUILD_IMAGE%:*}
       shell: bash
 
     ###### Deploy Kubernetes Artifacts ######
