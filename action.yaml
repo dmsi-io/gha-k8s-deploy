@@ -203,7 +203,7 @@ runs:
     - name: Output URL
       id: URL
       if: inputs.skip_k8s_deploy != 'true' && steps.namespace_exists.outputs.files_exists == 'true'
-      run: echo "::set-output name=URL::https://$HOSTNAME"
+      run: echo "URL=https://$HOSTNAME" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Copy secret to namespace
