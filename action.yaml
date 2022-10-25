@@ -108,7 +108,7 @@ runs:
 
     - name: 'Check namespace existence'
       id: namespace_exists
-      runs: |
+      run: |
         if [ -f "${{ inputs.k8s_directory }}/${{ inputs.namespace }}" ]; then
           echo "files_exists=true" >> $GITHUB_OUTPUT
         else
@@ -118,7 +118,7 @@ runs:
 
     - name: 'Check configmap existence'
       id: configmap_exists
-      runs: |
+      run: |
         if [ -f "${{ inputs.k8s_directory }}/${{ inputs.configmap }}" ]; then
           echo "files_exists=true" >> $GITHUB_OUTPUT
         else
@@ -128,7 +128,7 @@ runs:
 
     - name: 'Check deployment existence'
       id: deployment_exists
-      runs: |
+      run: |
         if [ -f "${{ inputs.k8s_directory }}/${{ inputs.deployment }}" ]; then
           echo "files_exists=true" >> $GITHUB_OUTPUT
         else
@@ -138,7 +138,7 @@ runs:
 
     - name: 'Check service existence'
       id: service_exists
-      runs: |
+      run: |
         if [ -f "${{ inputs.k8s_directory }}/${{ inputs.service }}" ]; then
           echo "files_exists=true" >> $GITHUB_OUTPUT
         else
@@ -148,7 +148,7 @@ runs:
 
     - name: 'Check ingress existence'
       id: ingress_exists
-      runs: |
+      run: |
         if [ -f "${{ inputs.k8s_directory }}/${{ inputs.ingress }}" ]; then
           echo "files_exists=true" >> $GITHUB_OUTPUT
         else
