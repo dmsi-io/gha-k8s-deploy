@@ -160,7 +160,7 @@ runs:
 
     - name: Setup GCloud Auth
       id: auth
-      uses: google-github-actions/auth@v0.4.0
+      uses: google-github-actions/auth@v0
       with:
         workload_identity_provider: ${{ inputs.GCP_IDENTITY_PROVIDER }}
         service_account: ${{ inputs.GCP_SERVICE_ACCOUNT }}
