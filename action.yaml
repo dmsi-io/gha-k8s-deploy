@@ -108,34 +108,53 @@ runs:
 
     - name: 'Check namespace existence'
       id: namespace_exists
-      # Commit equivalent to https://github.com/andstor/file-existence-action/releases/tag/v1
-      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
-      with:
-        files: '${{ inputs.k8s_directory }}/${{ inputs.namespace }}'
+      runs: |
+        if [ -f "${{ inputs.k8s_directory }}/${{ inputs.namespace }}" ]; then
+          echo "files_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "files_exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
     - name: 'Check configmap existence'
       id: configmap_exists
-      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
-      with:
-        files: '${{ inputs.k8s_directory }}/${{ inputs.configmap }}'
+      runs: |
+        if [ -f "${{ inputs.k8s_directory }}/${{ inputs.configmap }}" ]; then
+          echo "files_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "files_exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
     - name: 'Check deployment existence'
       id: deployment_exists
-      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
-      with:
-        files: '${{ inputs.k8s_directory }}/${{ inputs.deployment }}'
+      runs: |
+        if [ -f "${{ inputs.k8s_directory }}/${{ inputs.deployment }}" ]; then
+          echo "files_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "files_exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
     - name: 'Check service existence'
       id: service_exists
-      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
-      with:
-        files: '${{ inputs.k8s_directory }}/${{ inputs.service }}'
+      runs: |
+        if [ -f "${{ inputs.k8s_directory }}/${{ inputs.service }}" ]; then
+          echo "files_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "files_exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
     - name: 'Check ingress existence'
       id: ingress_exists
-      uses: andstor/file-existence-action@87d74d4732ddb824259d80c8a508c0124bf1c673
-      with:
-        files: '${{ inputs.k8s_directory }}/${{ inputs.ingress }}'
+      runs: |
+        if [ -f "${{ inputs.k8s_directory }}/${{ inputs.ingress }}" ]; then
+          echo "files_exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "files_exists=false" >> $GITHUB_OUTPUT
+        fi
+      shell: bash
 
     ###### GCloud Setup ######
 
