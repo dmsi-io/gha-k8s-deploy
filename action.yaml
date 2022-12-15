@@ -160,14 +160,13 @@ runs:
 
     - name: Setup GCloud Auth
       id: auth
-      uses: google-github-actions/auth@v0
+      uses: google-github-actions/auth@v1
       with:
         workload_identity_provider: ${{ inputs.GCP_IDENTITY_PROVIDER }}
         service_account: ${{ inputs.GCP_SERVICE_ACCOUNT }}
-        credentials_json: ${{ inputs.GCP_SA_KEY }}
 
     - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0.2.1
+      uses: google-github-actions/setup-gcloud@v1
 
     - name: Use gcloud CLI
       if: inputs.print_gcloud_info == 'true'
@@ -207,9 +206,13 @@ runs:
     ###### Deploy Kubernetes Artifacts ######
 
     - name: Authenticate GKE cluster
+      id: 'get-credentials'
       if: inputs.skip_k8s_deploy != 'true'
-      run: gcloud container clusters get-credentials ${{ inputs.GKE_CLUSTER_NAME }} --zone ${{ inputs.GCP_ZONE }} --project ${{ inputs.GCP_PROJECT_ID }}
-      shell: bash
+      uses: 'google-github-actions/get-gke-credentials@v1'
+      with:
+        cluster_name: ${{ inputs.GKE_CLUSTER_NAME }}
+        location: ${{ inputs.GCP_ZONE }}
+        project_id: ${{ inputs.GCP_PROJECT_ID }}
 
     - name: Deploy Namespace
       if: inputs.skip_k8s_deploy != 'true' && steps.namespace_exists.outputs.files_exists == 'true'
