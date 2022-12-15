@@ -206,7 +206,7 @@ runs:
     ###### Deploy Kubernetes Artifacts ######
 
     - name: Authenticate GKE cluster
-      id: 'get-credentials'
+      id: get-credentials
       if: inputs.skip_k8s_deploy != 'true'
       uses: google-github-actions/get-gke-credentials@v1
       with:
