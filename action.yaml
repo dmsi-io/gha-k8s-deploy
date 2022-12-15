@@ -208,7 +208,7 @@ runs:
     - name: Authenticate GKE cluster
       id: 'get-credentials'
       if: inputs.skip_k8s_deploy != 'true'
-      uses: 'google-github-actions/get-gke-credentials@v1'
+      uses: google-github-actions/get-gke-credentials@v1
       with:
         cluster_name: ${{ inputs.GKE_CLUSTER_NAME }}
         location: ${{ inputs.GCP_ZONE }}
